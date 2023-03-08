@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.lucasalfare.flbinary"
-version = "v1.0"
+version = "v1.1"
 
 repositories {
     mavenCentral()
