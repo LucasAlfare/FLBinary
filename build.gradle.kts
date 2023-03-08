@@ -1,10 +1,11 @@
 plugins {
     kotlin("jvm") version "1.8.0"
     application
+    `maven-publish`
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "com.lucasalfare.flbinary"
+version = "v1.0"
 
 repositories {
     mavenCentral()
@@ -22,6 +23,10 @@ kotlin {
     jvmToolchain(8)
 }
 
-application {
-    mainClass.set("MainKt")
+publishing {
+    publications {
+        create<MavenPublication>("Maven") {
+            from(components["kotlin"])
+        }
+    }
 }
