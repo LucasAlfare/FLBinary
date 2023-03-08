@@ -20,44 +20,89 @@ package com.lucasalfare.flbinary
  */
 class Reader(var data: UByteArray) {
 
+  /**
+   * This field hold the current position of where the
+   * bytes are being stored.
+   */
   private var position = 0
 
+  /**
+   * Reads a single byte in the specified position.
+   * The return type is Int.
+   */
   fun read1Byte(customPosition: Int = position): Int {
     val a = data[customPosition]
     val res = a.toInt()
-    position += 1
+    //position += 1
+    advancePosition()
     return res
   }
 
+  /**
+   * Reads a single byte in the specified position
+   * and interprets it as a Boolean value.
+   *
+   * Returns [true] if current byte is equals to 1 or [false]
+   * if current byte is equals to 0.
+   */
   fun readBoolean(customPosition: Int = position) = read1Byte(customPosition) == 1
 
+  /**
+   * Reads the next 2 bytes (counting from current position)
+   * and packs then into a single number of type [Int].
+   *
+   * This function automatically advances the current position.
+   */
   fun read2Bytes(customPosition: Int = position): Int {
     val a = data[customPosition + 0].toInt()
     val b = data[customPosition + 1].toInt()
     val res = (a shl 8) or b
-    position += 2
+    //position += 2
+    advancePosition(2)
     return res
   }
 
+  /**
+   * Reads the next 3 bytes (counting from current position)
+   * and packs then into a single number of type [Int].
+   *
+   * This function automatically advances the current position.
+   */
   fun read3Bytes(customPosition: Int = position): Int {
     val a = data[customPosition + 0].toInt()
     val b = data[customPosition + 1].toInt()
     val c = data[customPosition + 2].toInt()
     val res = ((a shl 16) or ((b shl 8))) or c
-    position += 3
+    //position += 3
+    advancePosition(3)
     return res
   }
 
+  /**
+   * Reads the next 4 bytes (counting from current position)
+   * and packs then into a single number of type [Long].
+   *
+   * This function automatically advances the current position.
+   */
   fun read4Bytes(customPosition: Int = position): Long {
     val a = data[customPosition + 0].toInt()
     val b = data[customPosition + 1].toInt()
     val c = data[customPosition + 2].toInt()
     val d = data[customPosition + 3].toInt()
     val res = (((a shl 24) or (b shl 16)) or (c shl 8)) or d
-    position += 4
+    //position += 4
+    advancePosition(4)
     return res.toLong()
   }
 
+  /**
+   * This function takes the next values that matches the
+   * current position plus [length] param and converts then
+   * to its respective [Char] values.
+   *
+   * After that, those [Chars] are appended to an empty
+   * [String], which is the main result of this function.
+   */
   fun readString(length: Int): String? {
     if (position + length > data.size) return null
     var result = ""
@@ -65,10 +110,24 @@ class Reader(var data: UByteArray) {
       .forEach {
         result += Char(it.toInt())
       }
-    position += length
+    //position += length
+    advancePosition(length)
     return result
   }
 
+  /**
+   * This function just skips current reading position to its current
+   * position plus the specified [length].
+   */
+  fun advancePosition(length: Int = 1) {
+    this.position += length
+  }
+
+  /**
+   * Prints this writer data as a simple table of max width 10 bytes.
+   *
+   * Also, the bytes are printed as their hexadecimal representations.
+   */
   override fun toString(): String {
     var res = ""
     data.forEachIndexed { index, i ->
@@ -90,6 +149,9 @@ class Reader(var data: UByteArray) {
  */
 class Writer {
 
+  /**
+   * The current writing data container.
+   */
   private val data = mutableListOf<Int>()
 
   fun write1Byte(value: Int) {
