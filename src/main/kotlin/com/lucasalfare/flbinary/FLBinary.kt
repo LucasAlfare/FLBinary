@@ -24,7 +24,7 @@ class Reader(var data: UByteArray) {
    * This field hold the current position of where the
    * bytes are being stored.
    */
-  private var position = 0
+  var position = 0
 
   /**
    * Reads a single byte in the specified position.
