@@ -69,8 +69,8 @@ fun main() {
 If is needed to read bytes, use the `Reader` class:
 ```kotlin
 fun main() {
-  val myData = arrayOf(0x1, 0x2, 0x3, 0x4)
-  val myReader = Reader(myData)
+  val myData = byteArrayOf(0x1, 0x2, 0x3, 0x4)
+  val myReader = Reader(myData.toUByteArray()) //you must add explicit annotation for this experimental feature
   println(myReader.read4Bytes()) //prints `0x1234`
 }
 ```
