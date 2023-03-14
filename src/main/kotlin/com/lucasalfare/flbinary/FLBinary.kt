@@ -126,6 +126,7 @@ class Reader(var data: UByteArray) {
   fun windowedValues(from: Int = 0, to: Int = 0): String {
     var res = ""
     data.slice(from..to).forEachIndexed { index, i ->
+      res += Integer.toHexString(i.toInt()).padStart(2, '0')
       if ((index + 1) % 10 == 0) {
         res += "\n"
       }
