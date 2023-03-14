@@ -33,7 +33,6 @@ class Reader(var data: UByteArray) {
   fun read1Byte(customPosition: Int = position): Int {
     val a = data[customPosition]
     val res = a.toInt()
-    //position += 1
     advancePosition()
     return res
   }
@@ -57,7 +56,6 @@ class Reader(var data: UByteArray) {
     val a = data[customPosition + 0].toInt()
     val b = data[customPosition + 1].toInt()
     val res = (a shl 8) or b
-    //position += 2
     advancePosition(2)
     return res
   }
@@ -73,7 +71,6 @@ class Reader(var data: UByteArray) {
     val b = data[customPosition + 1].toInt()
     val c = data[customPosition + 2].toInt()
     val res = ((a shl 16) or ((b shl 8))) or c
-    //position += 3
     advancePosition(3)
     return res
   }
@@ -90,7 +87,6 @@ class Reader(var data: UByteArray) {
     val c = data[customPosition + 2].toInt()
     val d = data[customPosition + 3].toInt()
     val res = (((a shl 24) or (b shl 16)) or (c shl 8)) or d
-    //position += 4
     advancePosition(4)
     return res.toLong()
   }
@@ -110,7 +106,6 @@ class Reader(var data: UByteArray) {
       .forEach {
         result += Char(it.toInt())
       }
-    //position += length
     advancePosition(length)
     return result
   }
