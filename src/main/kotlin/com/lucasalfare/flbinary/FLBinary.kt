@@ -123,21 +123,22 @@ class Reader(var data: UByteArray) {
     this.position += length
   }
 
-  /**
-   * Prints this writer data as a simple table of max width 10 bytes.
-   *
-   * Also, the bytes are printed as their hexadecimal representations.
-   */
-  override fun toString(): String {
+  fun windowedValues(from: Int = 0, to: Int = 0): String {
     var res = ""
-    data.forEachIndexed { index, i ->
-      res += "0x${Integer.toHexString(i.toInt()).padStart(2, '0')} "
+    data.slice(from..to).forEachIndexed { index, i ->
       if ((index + 1) % 10 == 0) {
         res += "\n"
       }
     }
     return res
   }
+
+  /**
+   * Prints this writer data as a simple table of max width 10 bytes.
+   *
+   * Also, the bytes are printed as their hexadecimal representations.
+   */
+  override fun toString() = windowedValues(from = 0, to = data.size)
 }
 
 /**
