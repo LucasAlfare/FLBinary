@@ -13,8 +13,7 @@ import kotlin.math.min
 fun windowedValues(data: UByteArray, from: Int = 0, to: Int = 0, tableWidth: Int = 10): String {
   val start = max(from, 0)
   val end = min(to, data.size)
-  var res = "${if (start != 0) "[..." else "["}\n"
-  res += "\t"
+  var res = ""
   data
     .slice(start..end)
     .forEachIndexed { index, byte ->
@@ -23,13 +22,7 @@ fun windowedValues(data: UByteArray, from: Int = 0, to: Int = 0, tableWidth: Int
       if ((index + 1) % tableWidth == 0) {
         res += "\n"
       }
-
-      if (index < data.size - 2) {
-        res += "\t"
-      }
     }
-
-  res += if (end != data.size) "...]" else "]"
 
   return res
 }
