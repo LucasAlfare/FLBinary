@@ -74,3 +74,5 @@ fun main() {
   println(myReader.read4Bytes()) //prints `0x1234`
 }
 ```
+
+Note that the type of the bytes container (data) is the kotlin expereimental type `UByteArray`. This type comes to Kotlin to help to deal with unsigned numbers, in this case bytes. In this project, this type was choose because to work directly with bytes normally is a job to run around the unsigned format of these numbers.
