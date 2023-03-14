@@ -10,7 +10,7 @@ import kotlin.math.min
  *
  * @return the visualization as a [String] value.
  */
-fun windowedValues(data: UByteArray, from: Int = 0, to: Int = 0, tableWidth: Int = 10): String {
+fun windowValues(data: UByteArray, from: Int = 0, to: Int = 0, tableWidth: Int = 10): String {
   val start = max(from, 0)
   val end = min(to, data.size)
   var res = ""

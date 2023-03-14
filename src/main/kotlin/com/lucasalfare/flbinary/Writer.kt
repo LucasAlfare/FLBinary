@@ -61,5 +61,5 @@ class Writer {
     return res
   }
 
-  override fun toString() = windowedValues(data = getData(), from = 0, to = data.size)
+  override fun toString() = windowValues(data = getData(), from = 0, to = data.size)
 }

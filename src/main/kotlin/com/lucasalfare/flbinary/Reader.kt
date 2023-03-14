@@ -123,5 +123,5 @@ class Reader(var data: UByteArray) {
    *
    * Also, the bytes are printed as their hexadecimal representations.
    */
-  override fun toString() = windowedValues(data = this.data, from = 0, to = data.size)
+  override fun toString() = windowValues(data = this.data, from = 0, to = data.size)
 }
