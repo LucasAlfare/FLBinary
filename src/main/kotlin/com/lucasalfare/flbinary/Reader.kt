@@ -123,85 +123,10 @@ class Reader(var data: UByteArray) {
     this.position += length
   }
 
-  fun windowedValues(from: Int = 0, to: Int = 0): String {
-    var res = ""
-    data.slice(from..to).forEachIndexed { index, i ->
-      res += "${Integer.toHexString(i.toInt()).padStart(2, '0')} "
-      if ((index + 1) % 10 == 0) {
-        res += "\n"
-      }
-    }
-    return res
-  }
-
   /**
    * Prints this writer data as a simple table of max width 10 bytes.
    *
    * Also, the bytes are printed as their hexadecimal representations.
    */
-  override fun toString() = windowedValues(from = 0, to = data.size)
-}
-
-/**
- * This class encapsulates the task of writing bytes to an single Array.
- *
- * Normally the [data] field represents bytes that should be recorded to an file.
- *
- * This class writes numbers of type [Int] directly as [Int]s to its root data.
- */
-class Writer {
-
-  /**
-   * The current writing data container.
-   */
-  private val data = mutableListOf<Int>()
-
-  fun write1Byte(value: Int) {
-    data += value
-  }
-
-  fun writeBoolean(value: Boolean) {
-    this.write1Byte(if (value) 1 else 0)
-  }
-
-  fun write2Bytes(value: Int) {
-    data += value shr 8
-    data += value and 0xff
-  }
-
-  fun write3Bytes(value: Int) {
-    data += ((value shr 16) and 0xff)
-    data += ((value shr 8) and 0xff)
-    data += ((value shr 0) and 0xff)
-  }
-
-  fun write4Bytes(value: Long) {
-    data += ((value shr 24) and 0xff).toInt()
-    data += ((value shr 16) and 0xff).toInt()
-    data += ((value shr 8) and 0xff).toInt()
-    data += ((value shr 0) and 0xff).toInt()
-  }
-
-  fun writeString(value: String) {
-    value.toCharArray().forEach {
-      write1Byte(it.code)
-    }
-  }
-
-  fun clearWritingData() {
-    data.clear()
-  }
-
-  fun getData() = data.toIntArray()
-
-  override fun toString(): String {
-    var res = ""
-    data.forEachIndexed { index, i ->
-      res += "0x${Integer.toHexString(i).padStart(2, '0')} "
-      if ((index + 1) % 10 == 0) {
-        res += "\n"
-      }
-    }
-    return res
-  }
+  override fun toString() = windowedValues(data = this.data, from = 0, to = data.size)
 }
