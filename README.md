@@ -1,5 +1,5 @@
 # FLBinary
-This repository contains some classes to help me deal with binaries for JVM.
+This repository contains some classes to help me to deal with binaries for JVM.
 
 Since I feel more confortable reading/writing bytes by myself I decided to write this simple library to do that, in order to avoid rewriting this code always I need it.
 
@@ -104,3 +104,6 @@ This library uses `Kotlin`, then the types are very friendly handled. Also, Kotl
 ## Writing
 
 "Write" bytes follows the same idea about bytes discussed above but instead of _packing bytes_ to a _single number_ we perform the reverse job: we take a single number and cracks it into `n` bytes. Taking the same example above, if we perform `write4Bytes()` on the input number `0xABCD` we should get as output the `data` array (`data = [0xA, 0xB, 0xC, 0xD]`).
+
+## Bytes endianness
+{TODO}
