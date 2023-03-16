@@ -107,3 +107,6 @@ This library uses `Kotlin`, then the types are very friendly handled. Also, Kotl
 
 ## Bytes endianness
 {TODO}
+
+## _Buffering_
+{TODO}
