@@ -38,7 +38,7 @@ You can grab this project directly from its [GitHub page](https://github.com/Luc
 
 ```kotlin
 sourceControl {
-  gitRepository(URI("https://github.com/LucasAlfare/FLBinary")) {
+  gitRepository(java.net.URI("https://github.com/LucasAlfare/FLBinary")) {
     producesModule("com.lucasalfare.flbinary:FLBinary")
   }
 }
