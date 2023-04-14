@@ -1,11 +1,10 @@
 plugins {
     kotlin("jvm") version "1.8.0"
-    application
     `maven-publish`
 }
 
 group = "com.lucasalfare.flbinary"
-version = "v1.3.2"
+version = "v1.2"
 
 repositories {
     mavenCentral()
