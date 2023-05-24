@@ -53,13 +53,8 @@ class Writer {
     data.clear()
   }
 
-  fun getData(): UByteArray {
-    val res = UByteArray(data.size)
-    data.toIntArray().forEachIndexed { index, i ->
-      res[index] = i.toUByte()
-    }
-    return res
-  }
+  @OptIn(ExperimentalUnsignedTypes::class)
+  fun getData() = data.map { it.toUByte() }.toUByteArray()
 
   override fun toString() = windowValues(data = getData(), from = 0, to = data.size)
 }
