@@ -56,5 +56,6 @@ class Writer {
   @OptIn(ExperimentalUnsignedTypes::class)
   fun getData() = data.map { it.toUByte() }.toUByteArray()
 
+  @OptIn(ExperimentalUnsignedTypes::class)
   override fun toString() = windowValues(data = getData(), from = 0, to = data.size)
 }
