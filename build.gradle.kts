@@ -1,32 +1,32 @@
 plugins {
-    kotlin("jvm") version "1.8.0"
-    application
-    `maven-publish`
+  kotlin("jvm") version "1.9.0"
+  application
+  `maven-publish`
 }
 
 group = "com.lucasalfare.flbinary"
-version = "v1.3.3"
+version = "v1.3.4"
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+  testImplementation(kotlin("test"))
 }
 
 tasks.test {
-    useJUnitPlatform()
+  useJUnitPlatform()
 }
 
 kotlin {
-    jvmToolchain(8)
+  jvmToolchain(8)
 }
 
 publishing {
-    publications {
-        create<MavenPublication>("Maven") {
-            from(components["kotlin"])
-        }
+  publications {
+    create<MavenPublication>("Maven") {
+      from(components["kotlin"])
     }
+  }
 }
