@@ -1,3 +1,6 @@
+[![](https://jitpack.io/v/LucasAlfare/FLBinary.svg)](https://jitpack.io/#LucasAlfare/FLBinary)
+
+
 # FLBinary
 This repository contains some classes to help me to deal with binaries for JVM.
 
@@ -14,7 +17,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.LucasAlfare:FLBinary:v1.1'
+  implementation 'com.github.LucasAlfare:FLBinary:v1.5'
 }
 ```
 
@@ -26,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.LucasAlfare:FLBinary:v1.1")
+    implementation("com.github.LucasAlfare:FLBinary:v1.5")
 }
 ```
 
