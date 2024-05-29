@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.LucasAlfare:FLBinary:v1.5'
+  implementation 'com.github.LucasAlfare:FLBinary:v1.6'
 }
 ```
 
@@ -29,11 +29,11 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.LucasAlfare:FLBinary:v1.5")
+    implementation("com.github.LucasAlfare:FLBinary:v1.6")
 }
 ```
 
-You can also find how to get the library if you are using another dependency manager system, such as `Maven` in this [Jitpack page](https://jitpack.io/#LucasAlfare/FLBinary/v1.1).
+You can also find how to get the library if you are using another dependency manager system, such as `Maven` in this [Jitpack page](https://jitpack.io/#LucasAlfare/FLBinary/v1.6).
 
 ## Downloading directly from GitHub:
 
