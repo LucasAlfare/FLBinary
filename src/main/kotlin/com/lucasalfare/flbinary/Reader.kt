@@ -117,11 +117,4 @@ class Reader(var data: UByteArray) {
   fun advancePosition(length: Int = 1) {
     this.position += length
   }
-
-  /**
-   * Prints this writer data as a simple table of max width 10 bytes.
-   *
-   * Also, the bytes are printed as their hexadecimal representations.
-   */
-  override fun toString() = windowValues(data = this.data, from = 0, to = data.size)
 }
