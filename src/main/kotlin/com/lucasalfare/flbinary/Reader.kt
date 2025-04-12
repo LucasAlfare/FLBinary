@@ -4,108 +4,131 @@
 package com.lucasalfare.flbinary
 
 /**
- * This class encapsulates the task of reading bytes to an single Array.
+ * This class encapsulates the task of reading bytes to a single array, interpreting them as signed integer values.
  *
- * This classes uses as main data source an array of type [UByteArray] in
- * order to avoid cast/conversions problems. For example, the hex value
- * [0xCC], when converted to Int, is turned to something like [0xFFFFFFCC].
+ * This class uses an array of type [UByteArray] as its main data source to avoid casting and conversion problems
+ * that arise when using signed integers. For example, the hex value [0xCC], when converted to [Int], becomes something
+ * like [0xFFFFFFCC], which is expected by the [Int] type specification but is not appropriate for this use case.
+ * To avoid this issue, unsigned bytes are used, and the class ensures that only unsigned values are processed correctly.
  *
- * This result is totally expected by the [Int] type specification however,
- * this is not appropriated to application. Then, to avoid this, using
- * _unsigned bytes_ should be fine.
+ * All reading methods in this class are written in the form "readXByte", meaning the method will take a sequence of
+ * `X` bytes from the [data] field and merge them into a single number of type [Int] or [Long].
  *
- * Finally, the methods are written in the form "readXByte", this means that
- * the method will take a sequence of that amount of elements from the [data]
- * field and merge those into a single number.
+ * The class also includes automatic position tracking to manage the current read position in the [data] array, advancing
+ * as data is read, ensuring that the sequence of bytes is handled in a linear fashion.
  */
 class Reader(var data: UByteArray) {
 
   /**
-   * This field hold the current position of where the
-   * bytes are being stored.
+   * Holds the current position where the next byte will be read.
+   * This is updated as data is read from the [data] array.
    */
   var position = 0
 
   /**
-   * Reads a single byte in the specified position.
-   * The return type is Int.
+   * Reads a single byte from the specified position in the [data] array.
+   * The returned value is an [Int], representing the byte as a signed integer.
+   *
+   * @param customPosition The position in the array from where the byte will be read.
+   * Defaults to the current position.
+   * @return The signed integer value of the byte at the specified position.
    */
   fun read1Byte(customPosition: Int = position): Int {
-    val a = data[customPosition]
-    val res = a.toInt()
+    // Ensure the position is within bounds
+    require(customPosition < data.size) { "Position out of bounds" }
+
+    val byte = data[customPosition].toInt()
     advancePosition()
-    return res
+    return byte
   }
 
   /**
-   * Reads a single byte in the specified position
-   * and interprets it as a Boolean value.
+   * Reads a single byte from the specified position and interprets it as a Boolean value.
+   * Returns `true` if the byte is equal to 1, and `false` if the byte is equal to 0.
    *
-   * Returns [true] if current byte is equals to 1 or [false]
-   * if current byte is equals to 0.
+   * @param customPosition The position in the array from where the byte will be read.
+   * Defaults to the current position.
+   * @return `true` if the byte is 1, `false` if the byte is 0.
    */
-  fun readBoolean(customPosition: Int = position) = read1Byte(customPosition) == 1
+  fun readBoolean(customPosition: Int = position): Boolean {
+    return read1Byte(customPosition) == 1
+  }
 
   /**
-   * Reads the next 2 bytes (counting from current position)
-   * and packs then into a single number of type [Int].
+   * Reads the next 2 bytes (starting from the current position) and packs them into a single signed integer of type [Int].
+   * The function automatically advances the current position by 2 bytes.
    *
-   * This function automatically advances the current position.
+   * @param customPosition The position in the array from where the bytes will be read.
+   * Defaults to the current position.
+   * @return The signed integer value formed by the 2 bytes read.
    */
   fun read2Bytes(customPosition: Int = position): Int {
-    val a = data[customPosition + 0].toInt()
-    val b = data[customPosition + 1].toInt()
-    val res = (a shl 8) or b
+    // Ensure the position is within bounds
+    require(customPosition + 1 < data.size) { "Position out of bounds for 2-byte read" }
+
+    val byte1 = data[customPosition].toInt()
+    val byte2 = data[customPosition + 1].toInt()
+    val result = (byte1 shl 8) or byte2
     advancePosition(2)
-    return res
+    return result
   }
 
   /**
-   * Reads the next 3 bytes (counting from current position)
-   * and packs then into a single number of type [Int].
+   * Reads the next 3 bytes (starting from the current position) and packs them into a single signed integer of type [Int].
+   * The function automatically advances the current position by 3 bytes.
    *
-   * This function automatically advances the current position.
+   * @param customPosition The position in the array from where the bytes will be read.
+   * Defaults to the current position.
+   * @return The signed integer value formed by the 3 bytes read.
    */
   fun read3Bytes(customPosition: Int = position): Int {
-    val a = data[customPosition + 0].toInt()
-    val b = data[customPosition + 1].toInt()
-    val c = data[customPosition + 2].toInt()
-    val res = ((a shl 16) or ((b shl 8))) or c
+    // Ensure the position is within bounds
+    require(customPosition + 2 < data.size) { "Position out of bounds for 3-byte read" }
+
+    val byte1 = data[customPosition].toInt()
+    val byte2 = data[customPosition + 1].toInt()
+    val byte3 = data[customPosition + 2].toInt()
+    val result = (byte1 shl 16) or (byte2 shl 8) or byte3
     advancePosition(3)
-    return res
+    return result
   }
 
   /**
-   * Reads the next 4 bytes (counting from current position)
-   * and packs then into a single number of type [Long].
+   * Reads the next 4 bytes (starting from the current position) and packs them into a single signed long of type [Long].
+   * The function automatically advances the current position by 4 bytes.
    *
-   * This function automatically advances the current position.
+   * @param customPosition The position in the array from where the bytes will be read.
+   * Defaults to the current position.
+   * @return The signed long value formed by the 4 bytes read.
    */
   fun read4Bytes(customPosition: Int = position): Long {
-    val a = data[customPosition + 0].toInt()
-    val b = data[customPosition + 1].toInt()
-    val c = data[customPosition + 2].toInt()
-    val d = data[customPosition + 3].toInt()
-    val res = (((a shl 24) or (b shl 16)) or (c shl 8)) or d
+    // Ensure the position is within bounds
+    require(customPosition + 3 < data.size) { "Position out of bounds for 4-byte read" }
+
+    val byte1 = data[customPosition].toInt()
+    val byte2 = data[customPosition + 1].toInt()
+    val byte3 = data[customPosition + 2].toInt()
+    val byte4 = data[customPosition + 3].toInt()
+    val result = (byte1 shl 24) or (byte2 shl 16) or (byte3 shl 8) or byte4
     advancePosition(4)
-    return res.toLong()
+    return result.toLong()
   }
 
   /**
-   * This function takes the next values that match the
-   * current position plus the [length] parameter and converts them
-   * to their respective [Char] values.
+   * Reads a string of characters from the [data] array starting at the current position.
+   * The length of the string is determined by the [length] parameter, and the bytes are converted to characters.
    *
-   * After that, those [Char]s are appended to a result array,
-   * which is converted to a string at the end.
+   * The function reads the specified number of bytes, converts them to [Char] values, and appends them to a result array,
+   * which is then converted to a string.
+   *
+   * @param length The number of bytes to read and convert to characters.
+   * @return The string formed by the characters, or throws [IllegalArgumentException] if the length exceeds the available data.
    */
-  fun readString(length: Int): String? {
-    if (position + length > data.size) return null
+  fun readString(length: Int): String {
+    // Ensure the position is within bounds
+    require(position + length <= data.size) { "Position out of bounds for string read" }
 
-    // Directly create a character array for the result
     val result = CharArray(length)
-
-    // Fill the result array directly
     for (i in 0 until length) {
       result[i] = data[position + i].toInt().toChar()
     }
@@ -115,10 +138,12 @@ class Reader(var data: UByteArray) {
   }
 
   /**
-   * This function just skips current reading position to its current
-   * position plus the specified [length].
+   * Advances the current position by the specified [length] (in bytes).
+   * This is used to move the read position forward as bytes are consumed.
+   *
+   * @param length The number of bytes to advance the position by. Defaults to 1 byte.
    */
   fun advancePosition(length: Int = 1) {
-    this.position += length
+    position += length
   }
 }
