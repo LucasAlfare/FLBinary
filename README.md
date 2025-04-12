@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.LucasAlfare:FLBinary:v1.6'
+  implementation 'com.github.LucasAlfare:FLBinary:1.7'
 }
 ```
 
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.LucasAlfare:FLBinary:v1.6")
+    implementation("com.github.LucasAlfare:FLBinary:1.7")
 }
 ```
 
