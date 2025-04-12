@@ -92,22 +92,26 @@ class Reader(var data: UByteArray) {
   }
 
   /**
-   * This function takes the next values that matches the
-   * current position plus [length] param and converts then
-   * to its respective [Char] values.
+   * This function takes the next values that match the
+   * current position plus the [length] parameter and converts them
+   * to their respective [Char] values.
    *
-   * After that, those [Chars] are appended to an empty
-   * [String], which is the main result of this function.
+   * After that, those [Char]s are appended to a result array,
+   * which is converted to a string at the end.
    */
   fun readString(length: Int): String? {
     if (position + length > data.size) return null
-    var result = ""
-    data.slice(position..(position - 1 + length))
-      .forEach {
-        result += Char(it.toInt())
-      }
+
+    // Directly create a character array for the result
+    val result = CharArray(length)
+
+    // Fill the result array directly
+    for (i in 0 until length) {
+      result[i] = data[position + i].toInt().toChar()
+    }
+
     advancePosition(length)
-    return result
+    return String(result)
   }
 
   /**
