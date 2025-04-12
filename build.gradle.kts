@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.lucasalfare.flbinary"
-version = "v1.6"
+version = "v1.7"
 
 repositories {
   mavenCentral()
@@ -20,7 +20,7 @@ tasks.test {
 }
 
 kotlin {
-  jvmToolchain(8)
+  jvmToolchain(21)
 }
 
 publishing {
