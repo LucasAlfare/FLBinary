@@ -1,5 +1,4 @@
 [versions]
-fl-binary = "1.7"
 kotlin = "2.1.10"
 
 [plugins]
