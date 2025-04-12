@@ -144,6 +144,7 @@ class Reader(var data: UByteArray) {
    * @param length The number of bytes to advance the position by. Defaults to 1 byte.
    */
   fun advancePosition(length: Int = 1) {
+    require(position + length < data.size) { "Can not to advance to the next position [${position + length}], it overflows data size [${data.size}]." }
     position += length
   }
 }
