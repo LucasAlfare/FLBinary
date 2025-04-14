@@ -39,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.LucasAlfare:FLBinary:1.7")
+    implementation("com.github.LucasAlfare:FLBinary:1.8")
 }
 ```
 
@@ -48,7 +48,7 @@ dependencies {
 If you're using [Version Catalogs](https://docs.gradle.org/current/userguide/version_catalogs.html), add the following to your `libs.versions.toml`:  
 ```toml
 [versions]
-flbinary = "1.7"
+flbinary = "1.8"
 
 [libraries]
 flbinary = { module = "com.github.LucasAlfare:FLBinary", version.ref = "flbinary" }
@@ -63,7 +63,7 @@ dependencies {
 
 #### Maven & Others
 
-Check [this JitPack page](https://jitpack.io/#LucasAlfare/FLBinary/1.7) for setup instructions tailored to your build tool.
+Check [this JitPack page](https://jitpack.io/#LucasAlfare/FLBinary/1.8) for setup instructions tailored to your build tool.
 
 ---
 
