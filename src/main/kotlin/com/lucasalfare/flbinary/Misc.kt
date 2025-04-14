@@ -3,123 +3,55 @@
 package com.lucasalfare.flbinary
 
 /**
- * Formats a section of a [UByteArray] as a hexadecimal dump with ASCII representation,
- * similar to the output of the `xxd` command-line tool.
+ * Generates a hex dump of the given [UByteArray], similar to the output of the `xxd` command-line tool.
  *
- * Each line includes:
- * - The offset (in hexadecimal) of the first byte in the line
- * - A sequence of bytes in hexadecimal, with an extra space after half the width
- * - The corresponding ASCII characters (printable ones only; others shown as '.')
+ * Each line of the output includes:
+ * - The offset in hexadecimal (8 digits),
+ * - A group of up to [bytesPerLine] bytes in hexadecimal format, separated by spaces,
+ * - A textual representation of the bytes, where non-printable characters are replaced with a dot (`.`).
  *
- * Example output:
+ * The format for each line is:
  * ```
- * 00000000  48 65 6C 6C 6F 2C 20 77  6F 72 6C 64 21 0A       Hello, world!.
+ * 00000000 | 48 65 6C 6C 6F 20 77 6F 72 6C 64 21       | Hello world!
  * ```
  *
- * @param data The byte array to visualize.
- * @param from The starting index (inclusive). Defaults to 0.
- * @param to The ending index (exclusive). Defaults to [data].size.
- * @param tableWidth The number of bytes per line. Defaults to 16.
- * @return A string containing the formatted hex+ASCII dump.
+ * @param data The [UByteArray] to be dumped.
+ * @param bytesPerLine The number of bytes to display per line (default is 16).
+ * @return A [String] representing the formatted hex dump.
  */
-fun Reader.toHexView(
-  data: UByteArray = this.data,
-  from: Int = 0,
-  to: Int = this.data.size,
-  tableWidth: Int = 16
-): String {
-  val start = from.coerceAtLeast(0)
-  val end = to.coerceAtMost(data.size)
-  if (start >= end) return ""
+fun hexDump(data: UByteArray, bytesPerLine: Int = 16): String = buildString {
+  val totalLines = (data.size + bytesPerLine - 1) / bytesPerLine
 
-  return buildString {
-    var i = start
-    while (i < end) {
-      // Offset
-      append("%08X  ".format(i))
+  for (line in 0 until totalLines) {
+    val offset = line * bytesPerLine
+    val end = minOf(offset + bytesPerLine, data.size)
+    val lineBytes = data.slice(offset until end)
 
-      val lineEnd = (i + tableWidth).coerceAtMost(end)
+    append("%08X".format(offset)).append(" | ")
 
-      // Hex section
-      for (j in i until lineEnd) {
-        append("%02X ".format(data[j]))
-      }
-
-      // Padding if last line is shorter
-      val missing = tableWidth - (lineEnd - i)
-      repeat(missing) { append("   ") }
-
-      append(" ")
-
-      // ASCII section
-      for (j in i until lineEnd) {
-        val c = data[j].toInt().toChar()
-        append(if (c.isLetterOrDigit() || c.isWhitespace() || c in '!'..'~') c else '.')
-      }
-
-      append('\n')
-      i += tableWidth
+    for (i in 0 until bytesPerLine) {
+      append(
+        if (offset + i < data.size)
+          "%02X ".format(data[offset + i].toInt())
+        else
+          "   "
+      )
     }
+
+    append("| ")
+
+    for (byte in lineBytes) {
+      val c = byte.toInt().toChar()
+      append(if (c.isLetterOrDigit() || c in ' '..'~') c else '.')
+    }
+
+    appendLine()
   }
 }
 
-/**
- * Formats a section of a [UByteArray] as a hexadecimal dump with ASCII representation,
- * similar to the output of the `xxd` command-line tool.
- *
- * Each line includes:
- * - The offset (in hexadecimal) of the first byte in the line
- * - A sequence of bytes in hexadecimal, with an extra space after half the width
- * - The corresponding ASCII characters (printable ones only; others shown as '.')
- *
- * Example output:
- * ```
- * 00000000  48 65 6C 6C 6F 2C 20 77  6F 72 6C 64 21 0A       Hello, world!.
- * ```
- *
- * @param data The byte array to visualize.
- * @param from The starting index (inclusive). Defaults to 0.
- * @param to The ending index (exclusive). Defaults to [data].size.
- * @param tableWidth The number of bytes per line. Defaults to 16.
- * @return A string containing the formatted hex+ASCII dump.
- */
-fun Writer.toHexView(
-  data: UByteArray = this.getData(),
-  from: Int = 0,
-  to: Int = this.getData().size,
-  tableWidth: Int = 16
-): String {
-  val start = from.coerceAtLeast(0)
-  val end = to.coerceAtMost(data.size)
-  if (start >= end) return ""
+// Extensions
+fun Reader.toHexView(bytesPerLine: Int = 16): String =
+  hexDump(this.data, bytesPerLine)
 
-  return buildString {
-    var i = start
-    while (i < end) {
-      // Offset
-      append("%08X  ".format(i))
-
-      val lineEnd = (i + tableWidth).coerceAtMost(end)
-
-      // Hex section
-      for (j in i until lineEnd) {
-        append("%02X ".format(data[j]))
-      }
-
-      // Padding if last line is shorter
-      val missing = tableWidth - (lineEnd - i)
-      repeat(missing) { append("   ") }
-
-      append(" ")
-
-      // ASCII section
-      for (j in i until lineEnd) {
-        val c = data[j].toInt().toChar()
-        append(if (c.isLetterOrDigit() || c.isWhitespace() || c in '!'..'~') c else '.')
-      }
-
-      append('\n')
-      i += tableWidth
-    }
-  }
-}
+fun Writer.toHexView(bytesPerLine: Int = 16): String =
+  hexDump(this.getData(), bytesPerLine)
