@@ -121,14 +121,18 @@ reader.advancePosition(3) // skips 3 bytes
 
 ### Example
 
-- Read 2 bytes as an integer
-- Read a boolean value
-- Read a 4-byte long
-- Read a string of length 5
+Imagine you have a file in a arbitrary format that says in its specification that is composed like following:
+
+- `2 bytes` representing a integer;
+- `1 byte` representing a boolean flag;
+- `4 bytes` representing other integer;
+- `5 bytes` representing the text "`Hello`".
+
+The you can do this to read that information from the file:
 
     ```kotlin
-    val bytes = ubyteArrayOf(0x00u, 0x02u, 0x01u, 0x00u, 0x00u, 0x00u, 0x2Au, 0x48u, 0x65u, 0x6Cu, 0x6Cu, 0x6Fu)
-    val reader = Reader(bytes)
+    val fileBytes = ubyteArrayOf(0x00u, 0x02u, 0x01u, 0x00u, 0x00u, 0x00u, 0x2Au, 0x48u, 0x65u, 0x6Cu, 0x6Cu, 0x6Fu)
+    val reader = Reader(fileBytes)
     
     val two = reader.read2Bytes()       // 0x0002
     val boolean = reader.readBoolean()  // true (0x01)
@@ -136,7 +140,7 @@ reader.advancePosition(3) // skips 3 bytes
     val string = reader.readString(5)   // "Hello"
     ```
 
-Always ensure that the reads do not exceed the bounds of the data array, as each method includes basic validation and will throw if attempting to read past the end of the array.
+> _**Note:**_ Always ensure that the reads do not exceed the bounds of the data array, as each method includes basic validation and will throw if attempting to read past the end of the array.
 
 --- 
 
