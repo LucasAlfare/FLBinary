@@ -138,6 +138,29 @@ class Reader(var data: UByteArray) {
   }
 
   /**
+   * Reads a sequence of bytes from the current position in the data buffer.
+   *
+   * This method extracts exactly [numBytes] bytes starting from the current
+   * position, advances the internal position cursor by [numBytes], and returns
+   * the extracted bytes as a [UByteArray].
+   *
+   * @param numBytes The number of bytes to read from the current position.
+   * @return A [UByteArray] containing the read bytes.
+   *
+   * @throws IllegalArgumentException if the requested range exceeds the data buffer size.
+   */
+  fun readBytes(numBytes: Int): UByteArray {
+    val start = this.position
+    val end = start + numBytes
+
+    require(end <= data.size) { "Requested byte range exceeds buffer size" }
+
+    val result = this.data.sliceArray(start until end)
+    advancePosition(numBytes)
+    return result
+  }
+
+  /**
    * Advances the current position by the specified [length] (in bytes).
    * This is used to move the read position forward as bytes are consumed.
    *
