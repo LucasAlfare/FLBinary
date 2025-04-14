@@ -43,15 +43,33 @@ class Reader(var data: UByteArray) {
   }
 
   /**
-   * Reads a single byte from the specified position and interprets it as a Boolean value.
-   * Returns `true` if the byte is equal to 1, and `false` if the byte is equal to 0.
+   * Reads a single byte from the given position and interprets it as a Boolean.
    *
-   * @param customPosition The position in the array from where the byte will be read.
-   * Defaults to the current position.
-   * @return `true` if the byte is 1, `false` if the byte is 0.
+   * The byte must be either `0` or `1`. Returns `true` if the byte is `1`, and `false` if it is `0`.
+   *
+   * If the byte has a value other than `0` or `1`, the behavior depends on [strictMode]:
+   * - If `strictMode` is `true`, throws [NoSuchElementException].
+   * - If `strictMode` is `false`, returns `false` by default.
+   *
+   * @param position The position in the array to read the byte from. Defaults to the current position.
+   * @param strictMode Whether to throw an exception if the value is not 0 or 1. Defaults to `false`.
+   * @return The boolean value corresponding to the byte read.
+   * @throws NoSuchElementException if the byte is not 0 or 1 and [strictMode] is enabled.
    */
-  fun readBoolean(customPosition: Int = position): Boolean {
-    return read1Byte(customPosition) == 1
+  fun readBoolean(
+    position: Int = this.position,
+    strictMode: Boolean = false
+  ): Boolean {
+    return when (val byteValue = read1Byte(position)) {
+      1 -> true
+      0 -> false
+      else -> {
+        if (strictMode) {
+          throw NoSuchElementException("Expected byte value 0 or 1 at position $position, but got: $byteValue")
+        }
+        false
+      }
+    }
   }
 
   /**
@@ -165,9 +183,12 @@ class Reader(var data: UByteArray) {
    * This is used to move the read position forward as bytes are consumed.
    *
    * @param length The number of bytes to advance the position by. Defaults to 1 byte.
+   *
+   * @return The position itself. Helps to store it without extra calls.
    */
-  fun advancePosition(length: Int = 1) {
-    require(position + length < data.size) { "Can not to advance to the next position [${position + length}], it overflows data size [${data.size}]." }
+  fun advancePosition(length: Int = 1): Int {
+    require(position + length <= data.size) { "Can not to advance to the next position [${position + length}], it overflows data size [${data.size}]." }
     position += length
+    return position
   }
 }
