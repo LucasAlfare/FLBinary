@@ -8,6 +8,10 @@ It was created to avoid repetitive boilerplate when manually working with byte s
 
 If you're comfortable manipulating bytes directly, this library provides an intuitive and minimalistic approach to handle binary data more effectively.
 
+> Why do you created this? Is possible perform this job using existing Kotlin APIs...
+
+Well... I was simply doing binary reading in low-level like the implementations in a lot of projects. All the projects was very simple and really didn't the needs of using more the making the bitwise operations by hand. For this reason, I decided to abstract all of this in a reusable code, in this case, this repository.
+
 ---
 
 ## Features
