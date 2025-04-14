@@ -12,6 +12,8 @@ If you're comfortable manipulating bytes directly, this library provides an intu
 
 Well... I was simply doing binary reading in low-level like the implementations in a lot of projects. All the projects was very simple and really didn't the needs of using more the making the bitwise operations by hand. For this reason, I decided to abstract all of this in a reusable code, in this case, this repository.
 
+I am also using this project to study real case tool development. This project is being used in a tool called [FLMidi](https://github.com/LucasAlfare/FLMidi), which is a reader for MIDI files. For now, my binary helper is being very useful, at least for that propose.
+
 ---
 
 ## Features
