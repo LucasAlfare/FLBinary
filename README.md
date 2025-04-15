@@ -1,7 +1,4 @@
-[![](https://jitpack.io/v/LucasAlfare/FLBinary.svg)](https://jitpack.io/#LucasAlfare/FLBinary)
-
-
-# FLBinary
+# FLBinary [![](https://jitpack.io/v/LucasAlfare/FLBinary.svg)](https://jitpack.io/#LucasAlfare/FLBinary)
 
 **FLBinary** is a lightweight utility library designed to simplify binary reading and writing on the JVM.  
 It was created to avoid repetitive boilerplate when manually working with byte streams in Kotlin or Java.
