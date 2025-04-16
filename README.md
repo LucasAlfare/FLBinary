@@ -138,15 +138,15 @@ Imagine you have a file in a arbitrary format that says in its specification tha
 
 The you can do this to read that information from the file:
 
-    ```kotlin
-    val fileBytes = ubyteArrayOf(0x00u, 0x02u, 0x01u, 0x00u, 0x00u, 0x00u, 0x2Au, 0x48u, 0x65u, 0x6Cu, 0x6Cu, 0x6Fu)
-    val reader = Reader(fileBytes)
-    
-    val two = reader.read2Bytes()       // 0x0002
-    val boolean = reader.readBoolean()  // true (0x01)
-    val number = reader.read4Bytes()    // 42 (0x0000002A)
-    val string = reader.readString(5)   // "Hello"
-    ```
+```kotlin
+val fileBytes = ubyteArrayOf(0x00u, 0x02u, 0x01u, 0x00u, 0x00u, 0x00u, 0x2Au, 0x48u, 0x65u, 0x6Cu, 0x6Cu, 0x6Fu)
+val reader = Reader(fileBytes)
+
+val two = reader.read2Bytes()       // 0x0002
+val boolean = reader.readBoolean()  // true (0x01)
+val number = reader.read4Bytes()    // 42 (0x0000002A)
+val string = reader.readString(5)   // "Hello"
+```
 
 > _**Note:**_ Always ensure that the reads do not exceed the bounds of the data array, as each method includes basic validation and will throw if attempting to read past the end of the array.
 
