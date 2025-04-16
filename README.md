@@ -28,7 +28,7 @@ I am also using this project to study real case tool development. This project i
 - Explicit byte-level control
 - Kotlin-first API, but fully usable from Java
 - No unnecessary dependencies
-- No extra overheads
+- No extra overheads: directly uses the bytes
 
 ---
 
@@ -127,6 +127,16 @@ The `Reader` class is designed to facilitate reading signed integers and strings
 reader.advancePosition(3) // skips 3 bytes
 ```
 
+6. **Read bits**  
+    We can read from 0 to 64 bits at once to a single variable using the function `readBits(numBits)`. This function basically gets all the next `numBits` bits and pack then into the result number, which is a `Long` integer type.  
+   This function also advances the `position`: if to read `numBits` is necessary `n bytes`, then those bytes are consumed and the position is updated accordingly.
+```kotlin
+val data = ubyteArrayOf(0b11111111u, 0b11100000u, 0b11011011u, ...)
+val reader = Reader(data)
+val bits = reader.readBits(11)
+println(bits.toString(2)) // -> "11111111111"
+```
+
 ### Example
 
 Imagine you have a file in a arbitrary format that says in its specification that is composed like following:
@@ -151,6 +161,9 @@ val string = reader.readString(5)   // "Hello"
 > _**Note:**_ Always ensure that the reads do not exceed the bounds of the data array, as each method includes basic validation and will throw if attempting to read past the end of the array.
 
 --- 
+
+## TODO
+Is very needed to abstract the reader to use any other bytes source, such as `streams` and `buffers`.
 
 ## License
 
