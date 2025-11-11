@@ -54,4 +54,4 @@ fun Reader.toHexView(bytesPerLine: Int = 16): String =
   hexDump(this.data, bytesPerLine)
 
 fun Writer.toHexView(bytesPerLine: Int = 16): String =
-  hexDump(this.getData(), bytesPerLine)
+  hexDump(this.toUByteArray(), bytesPerLine)
